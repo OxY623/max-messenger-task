@@ -1,6 +1,10 @@
 # MAX MESSENGER
 
-## STRUCTURE PROJECT
+## Стэк
+
+React + TypeScript + Ant Design + Axios.
+
+## Структура проекта
 
 src/
 ├── components/          # Переиспользуемые компоненты
@@ -16,6 +20,10 @@ src/
 ├── types/              # TypeScript типы
 ├── constants/          # Константы приложения
 └── assets/             # Статические ресурсы
+
+## Реализовано
+
+React + TypeScript + Ant Design + Axios.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
