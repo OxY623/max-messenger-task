@@ -1,4 +1,21 @@
-# React + TypeScript + Vite
+# MAX MESSENGER
+
+## STRUCTURE PROJECT
+
+src/
+├── components/          # Переиспользуемые компоненты
+│   ├── ui/             # Базовые UI элементы (кнопки, инпуты)
+│   ├── layout/         # Компоненты раскладки (хедер, футер)
+│   └── features/       # Бизнес-компоненты
+├── pages/              # Страницы приложения
+├── services/           # Работа с API
+├── store/              # Глобальное состояние (Vuex, Redux, Pinia)
+├── utils/              # Вспомогательные функции
+├── hooks/              # Кастомные хуки (для React)
+├── composables/        # Композабельные функции (для Vue)
+├── types/              # TypeScript типы
+├── constants/          # Константы приложения
+└── assets/             # Статические ресурсы
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
