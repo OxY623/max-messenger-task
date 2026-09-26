@@ -1,24 +1,49 @@
 import axios from "axios";
 import type { IncomingNotification } from "../types/";
+
 // docs
 // GET url = "{{apiUrl}}/waInstance{{idInstance}}/receiveNotification/{{apiTokenInstance}}"
 // DELETE url = "{{apiUrl}}/waInstance{{idInstance}}/deleteNotification/{{apiTokenInstance}}/{{receiptId}}"
 const API_URL = import.meta.env.VITE_GREEN_API_URL;
-const ID_INSTANCE = import.meta.env.VITE_ID_INSTANCE;
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
+const DEFAULT_ID_INSTANCE = import.meta.env.VITE_ID_INSTANCE;
+const DEFAULT_API_TOKEN = import.meta.env.VITE_API_TOKEN;
 
-const greenApi = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export interface GreenApiAuth {
+  idInstance?: string;
+  apiTokenInstance?: string;
+}
 
-const instancePath = `waInstance${ID_INSTANCE}`;
+function getAuthConfig(auth?: GreenApiAuth) {
+  const idInstance = auth?.idInstance ?? DEFAULT_ID_INSTANCE;
+  const apiTokenInstance = auth?.apiTokenInstance ?? DEFAULT_API_TOKEN;
 
-export async function sendMessage(chatId: string, message: string) {
+  if (!idInstance || !apiTokenInstance) {
+    throw new Error("Green API credentials are not configured");
+  }
+
+  const greenApi = axios.create({
+    baseURL: API_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return {
+    greenApi,
+    instancePath: `waInstance${idInstance}`,
+    apiTokenInstance,
+  };
+}
+
+export async function sendMessage(
+  chatId: string,
+  message: string,
+  auth?: GreenApiAuth,
+) {
+  const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
+
   const response = await greenApi.post(
-    `/${instancePath}/sendMessage/${API_TOKEN}`,
+    `/${instancePath}/sendMessage/${apiTokenInstance}`,
     {
       chatId,
       message,
@@ -28,9 +53,11 @@ export async function sendMessage(chatId: string, message: string) {
   return response.data;
 }
 
-export async function checkAccount(phoneNumber: string) {
+export async function checkAccount(phoneNumber: string, auth?: GreenApiAuth) {
+  const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
+
   const response = await greenApi.post(
-    `/${instancePath}/checkAccount/${API_TOKEN}`,
+    `/${instancePath}/checkAccount/${apiTokenInstance}`,
     {
       phoneNumber: Number(phoneNumber),
     },
@@ -39,9 +66,11 @@ export async function checkAccount(phoneNumber: string) {
   return response.data;
 }
 
-export async function receiveNotification() {
+export async function receiveNotification(auth?: GreenApiAuth) {
+  const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
+
   const response = await greenApi.get<IncomingNotification>(
-    `/${instancePath}/receiveNotification/${API_TOKEN}`,
+    `/${instancePath}/receiveNotification/${apiTokenInstance}`,
     {
       params: {
         receiveTimeout: 10,
@@ -52,9 +81,14 @@ export async function receiveNotification() {
   return response.data;
 }
 
-export async function deleteNotification(receiptId: number) {
+export async function deleteNotification(
+  receiptId: number | string,
+  auth?: GreenApiAuth,
+) {
+  const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
+
   const response = await greenApi.delete(
-    `/${instancePath}/deleteNotification/${API_TOKEN}/${receiptId}`,
+    `/${instancePath}/deleteNotification/${apiTokenInstance}/${receiptId}`,
   );
 
   return response.data;

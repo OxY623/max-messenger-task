@@ -1,4 +1,7 @@
-
+export type IAuth = {
+  idInstance: string;
+  apiTokenInstance: string;
+};
 
 export interface Message {
   id: string;
@@ -6,18 +9,18 @@ export interface Message {
   fromMe: boolean;
   timestamp: number;
 }
-// текст сообщения const mess = messageData.textMessageData.textMessage
+
 export interface IncomingNotification {
-  receiptId: number;
+  receiptId: number | string;
   body: {
     typeWebhook: string;
     idMessage: string;
     timestamp: number;
     senderData: {
       chatId: string;
-      chatName: string;
+      chatName?: string;
       sender: string;
-      senderName: string;
+      senderName?: string;
       senderPhoneNumber?: string;
     };
     messageData: {
@@ -28,3 +31,19 @@ export interface IncomingNotification {
     };
   };
 }
+
+export type IData = {
+  auth: IAuth;
+  chatId: string;
+  handleChangeChatId: (
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
+  ) => void;
+  clearMessages: () => void;
+  chatTitle: string;
+  handleLogout: () => void;
+  messages: Message[];
+  draft: string;
+  sending: boolean;
+  handleInputMessage: (mess: string) => void;
+  handleSend: () => Promise<void>;
+};

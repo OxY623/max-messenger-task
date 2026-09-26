@@ -1,103 +1,38 @@
-# MAX MESSENGER
+# MAX Messenger
 
-## Стэк
+Веб-приложение для обмена текстовыми сообщениями через Green API. Подключите аккаунт, укажите ID чата, чтобы отправлять сообщения и получать входящие.
 
-React + TypeScript + Ant Design + Axios.
+## Возможности
 
-## Структура проекта
+- Подключение по `idInstance` и `apiTokenInstance`.
+- Отправка и получение текстовых сообщений.
+- Очистка списка сообщений и смена аккаунта.
 
-src/
-├── components/          # Переиспользуемые компоненты
-│   ├── ui/             # Базовые UI элементы (кнопки, инпуты)
-│   ├── layout/         # Компоненты раскладки (хедер, футер)
-│   └── features/       # Бизнес-компоненты
-├── pages/              # Страницы приложения
-├── services/           # Работа с API
-├── store/              # Глобальное состояние (Vuex, Redux, Pinia)
-├── utils/              # Вспомогательные функции
-├── hooks/              # Кастомные хуки (для React)
-├── composables/        # Композабельные функции (для Vue)
-├── types/              # TypeScript типы
-├── constants/          # Константы приложения
-└── assets/             # Статические ресурсы
+## Технологии
 
-## Реализовано
+React, TypeScript, Vite, Ant Design и Axios.
 
-React + TypeScript + Ant Design + Axios.
+## Запуск
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Нужны Node.js и npm.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Откройте адрес, указанный Vite в терминале (обычно `http://localhost:5173`). Команда `npm run build` собирает production-версию, а `npm run lint` проверяет код.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Для подключения укажите адрес Green API и учётные данные в форме приложения. При необходимости их можно задать через `.env`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```env
+VITE_GREEN_API_URL=https://api.green-api.com
+VITE_ID_INSTANCE=your_instance_id
+VITE_API_TOKEN=your_api_token
 ```
+
+!!! Не публикуйте реальные токены в открытом репозитории.!!!!
+
+## Публикация
+
+Ссылка на репозиторий: [MAX Messenger](https://github.com/OxY623/max-messenger-task)
