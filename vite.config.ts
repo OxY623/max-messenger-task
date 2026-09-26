@@ -4,6 +4,6 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/",
+  base: "/max-messenger-task/",
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
 });
