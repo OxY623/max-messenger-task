@@ -1,6 +1,6 @@
 import { Button, Input } from "antd";
 import type { IData } from "../../../../types";
-import { MessageInput } from "../../../features/message-input";
+import { MessageInput } from "../../../ui/message-input";
 import { MessageList } from "../../../ui/message-list";
 
 type Props = {
