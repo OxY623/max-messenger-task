@@ -60,51 +60,50 @@ export function useChat(
     const pollNotifications = async () => {
       while (!stopped) {
         try {
+          if (stopped) break;
+
           const notification = await receiveNotification(auth);
 
-          if (!notification) continue;
-
-          const body = notification.body;
-
-          if (
-            body.typeWebhook === "incomingMessageReceived" &&
-            body.messageData.typeMessage === "textMessage"
-          ) {
-            const text = body.messageData.textMessageData?.textMessage;
-            const incomingChatId = body.senderData.chatId;
-
-            if (text) {
-              if (!chatIdRef.current) {
-                chatIdRef.current = incomingChatId;
-                setChatId(incomingChatId);
-              }
-
-              if (chatIdRef.current === incomingChatId) {
-                setChatTitle(
-                  body.senderData.chatName ||
-                    body.senderData.senderName ||
-                    incomingChatId ||
-                    "Чат",
-                );
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    id: body.idMessage,
-                    text,
-                    fromMe: false,
-                    timestamp: body.timestamp,
-                  },
-                ]);
-              }
-            }
+          if (!notification) {
+            await new Promise((r) => setTimeout(r, 1000));
+            continue;
           }
 
           if (notification.receiptId !== undefined) {
             await deleteNotification(notification.receiptId, auth);
           }
-        } catch (error) {
+        } catch (error: unknown) {
+          messageApi.error(
+            "Ошибка при получении уведомлений. Проверьте подключение к сети.",
+          );
           console.error("Receive error:", error);
-          await new Promise((resolve) => setTimeout(resolve, 3000));
+          const response =
+            typeof error === "object" && error !== null && "response" in error
+              ? error.response
+              : undefined;
+          const isNetworkError = !response;
+          const status =
+            typeof response === "object" &&
+            response !== null &&
+            "status" in response
+              ? response.status
+              : undefined;
+
+          if (status === 401 || status === 403) {
+            setConnected(false);
+            messageApi.error(
+              "Ошибка авторизации. Проверьте idInstance и apiTokenInstance.",
+            );
+            // console.error(
+            //   "Ошибка авторизации. Проверьте idInstance и apiTokenInstance.",
+            // );
+            if (!stopped) {
+              stopped = true;
+            }
+            break;
+          }
+
+          await new Promise((r) => setTimeout(r, isNetworkError ? 3000 : 1000));
         }
       }
     };

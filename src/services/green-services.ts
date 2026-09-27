@@ -85,26 +85,16 @@ export async function checkAccount(
 export async function receiveNotification(auth?: GreenApiAuth) {
   const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
 
-  const response = await greenApi
-    .get<IncomingNotification>(
-      `/${instancePath}/receiveNotification/${apiTokenInstance}`,
-      {
-        params: {
-          receiveTimeout: 10,
-        },
+  const response = await greenApi.get<IncomingNotification>(
+    `/${instancePath}/receiveNotification/${apiTokenInstance}`,
+    {
+      params: {
+        receiveTimeout: 10,
       },
-    )
-    .catch((error) => {
-      if (error.response) {
-        console.log("Сервер ответил с ошибкой:", error.response.status);
-      } else if (error.request) {
-        console.log("Нет ответа от сервера:", error.request);
-      } else {
-        console.log("Другая ошибка:", error.message);
-      }
-    });
+    },
+  );
 
-  return response!.data;
+  return response.data;
 }
 
 export async function deleteNotification(
@@ -113,19 +103,9 @@ export async function deleteNotification(
 ) {
   const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
 
-  const response = await greenApi
-    .delete(
-      `/${instancePath}/deleteNotification/${apiTokenInstance}/${receiptId}`,
-    )
-    .catch((error) => {
-      if (error.response) {
-        console.log("Сервер ответил с ошибкой:", error.response.status);
-      } else if (error.request) {
-        console.log("Нет ответа от сервера:", error.request);
-      } else {
-        console.log("Другая ошибка:", error.message);
-      }
-    });
+  const response = await greenApi.delete(
+    `/${instancePath}/deleteNotification/${apiTokenInstance}/${receiptId}`,
+  );
 
-  return response!.data;
+  return response.data;
 }
