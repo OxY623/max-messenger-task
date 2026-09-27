@@ -3,9 +3,19 @@ import type { Message } from "../../../../types/";
 
 interface MessageListProps {
   messages: Message[];
+  emptyMessage?: string;
 }
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList({
+  messages,
+  emptyMessage = "Сообщений пока нет",
+}: MessageListProps) {
+  if (messages.length === 0) {
+    return (
+      <div className="message-list message-list--empty">{emptyMessage}</div>
+    );
+  }
+
   return (
     <div className="message-list">
       {messages.map((message) => (

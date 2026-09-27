@@ -1,17 +1,15 @@
 import axios from "axios";
-import type { IncomingNotification } from "../types/";
+import type {
+  CheckAccountResponse,
+  GreenApiAuth,
+  IncomingNotification,
+} from "../types/";
 
-// docs
 // GET url = "{{apiUrl}}/waInstance{{idInstance}}/receiveNotification/{{apiTokenInstance}}"
 // DELETE url = "{{apiUrl}}/waInstance{{idInstance}}/deleteNotification/{{apiTokenInstance}}/{{receiptId}}"
 const API_URL = import.meta.env.VITE_GREEN_API_URL;
 const DEFAULT_ID_INSTANCE = import.meta.env.VITE_ID_INSTANCE;
 const DEFAULT_API_TOKEN = import.meta.env.VITE_API_TOKEN;
-
-export interface GreenApiAuth {
-  idInstance?: string;
-  apiTokenInstance?: string;
-}
 
 function getAuthConfig(auth?: GreenApiAuth) {
   const idInstance = auth?.idInstance ?? DEFAULT_ID_INSTANCE;
@@ -25,6 +23,7 @@ function getAuthConfig(auth?: GreenApiAuth) {
     baseURL: API_URL,
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
   });
 
@@ -53,7 +52,10 @@ export async function sendMessage(
   return response.data;
 }
 
-export async function checkAccount(phoneNumber: string, auth?: GreenApiAuth) {
+export async function checkAccount(
+  phoneNumber: string,
+  auth?: GreenApiAuth,
+): Promise<CheckAccountResponse> {
   const { greenApi, instancePath, apiTokenInstance } = getAuthConfig(auth);
 
   const response = await greenApi.post(

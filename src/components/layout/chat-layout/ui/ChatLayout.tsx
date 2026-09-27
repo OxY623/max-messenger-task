@@ -1,7 +1,14 @@
-import { Button, Input } from "antd";
+import { Button } from "antd";
+import { useState } from "react";
 import type { IData } from "../../../../types";
+import {
+  getChatPhoneNumber,
+  isValidChatId,
+} from "../../../../utils/isValidData";
+import { ChatIdControl } from "../../../ui/chat-id-control";
 import { MessageInput } from "../../../ui/message-input";
 import { MessageList } from "../../../ui/message-list";
+import { MessageSearch } from "../../../ui/message-search";
 
 type Props = {
   data: IData;
@@ -11,6 +18,8 @@ const ChatLayout = ({ data }: Props) => {
   const {
     auth,
     chatId,
+    isCheckingChatId,
+    handleCheckChatId,
     handleChangeChatId,
     clearMessages,
     chatTitle,
@@ -21,6 +30,12 @@ const ChatLayout = ({ data }: Props) => {
     handleInputMessage,
     handleSend,
   } = data;
+  const [searchQuery, setSearchQuery] = useState("");
+  const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase();
+  const filteredMessages = messages.filter((message) =>
+    message.text.toLocaleLowerCase().includes(normalizedSearchQuery),
+  );
+
   return (
     <div className="chat-layout">
       <aside className="sidebar">
@@ -31,14 +46,14 @@ const ChatLayout = ({ data }: Props) => {
           <div className="sidebar__value">{auth.idInstance}</div>
         </div>
 
-        <div className="sidebar__section">
-          <label className="sidebar__label">Chat ID</label>
-          <Input
-            value={chatId}
-            onChange={(e) => handleChangeChatId(e)}
-            placeholder="380123456789@c.us"
-          />
-        </div>
+        <ChatIdControl
+          chatId={chatId}
+          isValid={isValidChatId(chatId)}
+          canCheck={Boolean(getChatPhoneNumber(chatId))}
+          checking={isCheckingChatId}
+          onChange={handleChangeChatId}
+          onCheck={handleCheckChatId}
+        />
 
         <Button
           type="primary"
@@ -59,7 +74,15 @@ const ChatLayout = ({ data }: Props) => {
           <Button onClick={handleLogout}>Сменить аккаунт</Button>
         </header>
 
-        <MessageList messages={messages} />
+        <MessageSearch value={searchQuery} onChange={setSearchQuery} />
+        <MessageList
+          messages={filteredMessages}
+          emptyMessage={
+            normalizedSearchQuery
+              ? "Совпадений не найдено"
+              : "Сообщений пока нет"
+          }
+        />
 
         <MessageInput
           value={draft}

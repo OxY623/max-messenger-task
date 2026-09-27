@@ -2,9 +2,9 @@ import "./App.css";
 import { ChatLayout } from "./components/layout/chat-layout";
 import { AuthForm } from "./components/ui/auth-form";
 import { useChat } from "./hooks/useChat";
-import type { IAuth, IData } from "./types";
+import type { GreenApiAuth, IData } from "./types";
 
-const defaultAuth: IAuth = {
+const defaultAuth: GreenApiAuth = {
   idInstance: import.meta.env.VITE_ID_INSTANCE ?? "",
   apiTokenInstance: import.meta.env.VITE_API_TOKEN ?? "",
 };
@@ -25,6 +25,8 @@ function App() {
   const data: IData = {
     auth,
     chatId,
+    isCheckingChatId: state.isCheckingChatId,
+    handleCheckChatId: actions.handleCheckChatId,
     handleChangeChatId,
     clearMessages,
     chatTitle,

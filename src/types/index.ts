@@ -1,7 +1,7 @@
-export type IAuth = {
-  idInstance: string;
-  apiTokenInstance: string;
-};
+export interface GreenApiAuth {
+  idInstance?: string;
+  apiTokenInstance?: string;
+}
 
 export interface Message {
   id: string;
@@ -32,9 +32,17 @@ export interface IncomingNotification {
   };
 }
 
-export type IData = {
-  auth: IAuth;
+export type CheckAccountResponse = {
+  exist: boolean;
   chatId: string;
+  fromCache: boolean;
+};
+
+export type IData = {
+  auth: GreenApiAuth;
+  chatId: string;
+  isCheckingChatId: boolean;
+  handleCheckChatId: () => Promise<void>;
   handleChangeChatId: (
     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
   ) => void;

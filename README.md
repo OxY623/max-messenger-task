@@ -35,4 +35,4 @@ VITE_API_TOKEN=your_api_token
 
 ## Публикация
 
-Ссылка на репозиторий: [MAX Messenger](https://oxy623.github.io/max-messenger-task/)
+Ссылка на : [MAX Messenger](https://oxy623.github.io/max-messenger-task/)
