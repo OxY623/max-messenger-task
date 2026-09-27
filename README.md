@@ -2,6 +2,10 @@
 
 Веб-приложение для обмена текстовыми сообщениями через Green API. Подключите аккаунт, укажите ID чата, чтобы отправлять сообщения и получать входящие.
 
+## Документация
+
+[GREEN API](https://green-api.com/v3/docs/api/receiving/technology-http-api/)
+
 ## Возможности
 
 - Подключение по `idInstance` и `apiTokenInstance`.
