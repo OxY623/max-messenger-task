@@ -12,8 +12,16 @@ const defaultAuth: GreenApiAuth = {
 function App() {
   const [state, actions, contextHolder] = useChat(defaultAuth);
 
-  const { connected, chatTitle, chatId, draft, messages, sending, auth } =
-    state;
+  const {
+    connected,
+    chatTitle,
+    chatId,
+    draft,
+    messages,
+    sending,
+    auth,
+    isCheckingChatId,
+  } = state;
   const {
     handleAuthSubmit,
     handleSend,
@@ -21,12 +29,13 @@ function App() {
     handleLogout,
     handleChangeChatId,
     clearMessages,
+    handleCheckChatId,
   } = actions;
   const data: IData = {
     auth,
     chatId,
-    isCheckingChatId: state.isCheckingChatId,
-    handleCheckChatId: actions.handleCheckChatId,
+    isCheckingChatId: isCheckingChatId,
+    handleCheckChatId: handleCheckChatId,
     handleChangeChatId,
     clearMessages,
     chatTitle,

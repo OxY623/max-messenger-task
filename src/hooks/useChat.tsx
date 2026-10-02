@@ -113,7 +113,7 @@ export function useChat(
     return () => {
       stopped = true;
     };
-  }, [auth, connected]);
+  }, [auth, connected, messageApi]);
 
   const handleAuthSubmit = useCallback(
     ({
